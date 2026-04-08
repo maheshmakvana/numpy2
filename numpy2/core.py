@@ -253,13 +253,38 @@ def serialize(obj: Any, include_metadata: bool = False) -> Dict[str, Any]:
         return result
 
     elif isinstance(obj, dict):
-        # Recursively serialize nested structures
-        return {k: serialize(v, include_metadata) if isinstance(v, (np.ndarray, pd.DataFrame, pd.Series)) else v
-                for k, v in obj.items()}
+        # Recursively serialize nested structures.
+        # For plain ndarray values inside a dict we return the raw list so
+        # that callers get result['key'] == [1, 2, 3] rather than
+        # result['key'] == {'data': [1, 2, 3]}.
+        result = {}
+        for k, v in obj.items():
+            if isinstance(v, np.ndarray):
+                result[k] = v.tolist()
+            elif isinstance(v, pd.Series):
+                result[k] = v.to_dict()
+            elif isinstance(v, pd.DataFrame):
+                result[k] = v.to_dict(orient='records')
+            elif isinstance(v, (dict, list, tuple)):
+                result[k] = serialize(v, include_metadata)
+            else:
+                result[k] = v
+        return result
 
     elif isinstance(obj, (list, tuple)):
-        return [serialize(item, include_metadata) if isinstance(item, (np.ndarray, pd.DataFrame, pd.Series)) else item
-                for item in obj]
+        out = []
+        for item in obj:
+            if isinstance(item, np.ndarray):
+                out.append(item.tolist())
+            elif isinstance(item, pd.Series):
+                out.append(item.to_dict())
+            elif isinstance(item, pd.DataFrame):
+                out.append(item.to_dict(orient='records'))
+            elif isinstance(item, (dict, list, tuple)):
+                out.append(serialize(item, include_metadata))
+            else:
+                out.append(item)
+        return out
 
     else:
         return json.loads(json.dumps(obj, cls=JSONEncoder))

@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "numpy2"
-version = "1.0.0"
-description = "Advanced NumPy for Web Applications - JSON serialization, type conversion, framework integration"
+version = "2.0.0"
+description = "Drop-in NumPy replacement with web superpowers — full NumPy API + JSON serialization, FastAPI/Flask/Django integration"
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}

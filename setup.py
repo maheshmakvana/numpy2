@@ -15,10 +15,10 @@ long_description = readme_file.read_text(encoding="utf-8") if readme_file.exists
 
 setup(
     name="numpy2",
-    version="1.0.0",
+    version="2.0.0",
     author="Mahesh Makvana",
     author_email="mahesh.makvana@example.com",
-    description="Advanced NumPy for Web Applications - Solves JSON serialization, type conversion, and framework integration pain points",
+    description="Drop-in NumPy replacement with web superpowers — full NumPy API + JSON serialization, FastAPI/Flask/Django integration",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/maheshmakvana/numpy2",
