@@ -2,10 +2,12 @@
 
 **Built by [Mahesh Makvana](https://github.com/maheshmakvana)**
 
-![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)
-![PyPI version](https://img.shields.io/badge/pypi-1.0.0-brightgreen.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-![NumPy Compatible](https://img.shields.io/badge/numpy-compatible-brightgreen.svg)
+[![PyPI version](https://img.shields.io/pypi/v/numpy2.svg)](https://pypi.org/project/numpy2/)
+[![Python Version](https://img.shields.io/pypi/pyversions/numpy2.svg)](https://pypi.org/project/numpy2/)
+[![Downloads](https://img.shields.io/pypi/dm/numpy2.svg)](https://pypi.org/project/numpy2/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![NumPy Compatible](https://img.shields.io/badge/numpy-compatible-brightgreen.svg)](https://pypi.org/project/numpy2/)
+[![Pure Python](https://img.shields.io/badge/pure-python-blue.svg)](https://pypi.org/project/numpy2/)
 
 ---
 
