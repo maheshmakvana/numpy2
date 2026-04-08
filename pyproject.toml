@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "numpy2"
-version = "2.0.0"
-description = "Drop-in NumPy replacement with web superpowers — full NumPy API + JSON serialization, FastAPI/Flask/Django integration"
+version = "2.0.1"
+description = "Pure-Python NumPy drop-in: full NumPy API + JSON serialization, FastAPI/Flask/Django integration, zero dependencies"
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
@@ -15,15 +15,25 @@ authors = [
 
 keywords = [
     "numpy",
-    "json",
-    "serialization",
-    "fastapi",
-    "flask",
-    "django",
-    "web",
-    "api",
+    "numpy2",
+    "numpy drop-in",
+    "pure python numpy",
+    "json serialization",
+    "numpy json",
+    "fastapi numpy",
+    "flask numpy",
+    "django numpy",
     "pandas",
     "data-science",
+    "ndarray",
+    "linear algebra",
+    "fft",
+    "random",
+    "numerical computing",
+    "scientific computing",
+    "int64 json",
+    "numpy serializable",
+    "rest-api",
 ]
 
 classifiers = [
@@ -45,10 +55,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 
-dependencies = [
-    "numpy>=1.20.0",
-    "pandas>=1.3.0",
-]
+dependencies = []
 
 [project.optional-dependencies]
 fastapi = ["fastapi>=0.95.0", "starlette>=0.26.0"]

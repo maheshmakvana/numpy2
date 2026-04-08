@@ -15,7 +15,7 @@ long_description = readme_file.read_text(encoding="utf-8") if readme_file.exists
 
 setup(
     name="numpy2",
-    version="2.0.0",
+    version="2.0.1",
     author="Mahesh Makvana",
     author_email="mahesh.makvana@example.com",
     description="Pure-Python NumPy drop-in: full NumPy API + JSON serialization, FastAPI/Flask/Django integration, zero dependencies",
