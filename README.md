@@ -1,7 +1,5 @@
 # numpy2 - Advanced NumPy for Web Applications
 
-**Built by [Mahesh Makvana](https://github.com/maheshmakvana)**
-
 [![PyPI version](https://img.shields.io/pypi/v/numpy2.svg)](https://pypi.org/project/numpy2/)
 [![Python Version](https://img.shields.io/pypi/pyversions/numpy2.svg)](https://pypi.org/project/numpy2/)
 [![Downloads](https://img.shields.io/pypi/dm/numpy2.svg)](https://pypi.org/project/numpy2/)
@@ -492,6 +490,15 @@ Thanks to the NumPy and pandas communities for amazing libraries that numpy2 bui
 
 ---
 
-**Made with ❤️ by Mahesh Makvana**
+## Changelog
 
-*Simplifying NumPy for the web, one line of code at a time.*
+### v2.1.0 (2026-04-10)
+- Added Changelog section to README for release traceability
+- Added ArrayCache, ArrayPipeline, ArrayValidator, compression helpers, sliding_window_view, batch_apply, describe
+- SEO improvements: numpy json serialization, numpy web api, numpy fastapi
+
+### v2.0.1
+- SEO improvements, zero-dep fix
+
+### v2.0.0
+- Initial release: pure-Python NumPy drop-in with JSON serialization, FastAPI/Flask/Django integration
