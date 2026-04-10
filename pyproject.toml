@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "numpy2"
-version = "2.0.1"
-description = "Pure-Python NumPy drop-in: full NumPy API + JSON serialization, FastAPI/Flask/Django integration, zero dependencies"
+version = "2.1.0"
+description = "Pure-Python NumPy drop-in: full NumPy API + JSON serialization, array compression, pipeline transforms, schema validation, zero dependencies"
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
@@ -17,14 +17,25 @@ keywords = [
     "numpy",
     "numpy2",
     "numpy drop-in",
+    "numpy replacement",
     "pure python numpy",
     "json serialization",
     "numpy json",
     "fastapi numpy",
     "flask numpy",
     "django numpy",
+    "web api numpy",
+    "array compression",
+    "array cache",
+    "array pipeline",
+    "array validation",
+    "sliding window",
+    "batch processing numpy",
+    "streaming array",
     "pandas",
     "data-science",
+    "type-conversion",
+    "rest-api",
     "ndarray",
     "linear algebra",
     "fft",
@@ -33,7 +44,9 @@ keywords = [
     "scientific computing",
     "int64 json",
     "numpy serializable",
-    "rest-api",
+    "object of type int64 is not json serializable",
+    "numpy web framework",
+    "numpy fastapi",
 ]
 
 classifiers = [

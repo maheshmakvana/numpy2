@@ -15,7 +15,7 @@ NumPy is used as an optional accelerator when installed; if it is absent
 every operation runs in pure Python.
 """
 
-__version__ = "2.0.1"
+__version__ = "2.1.0"
 __author__  = "Mahesh Makvana"
 __email__   = "mahesh.makvana@example.com"
 __license__ = "MIT"
@@ -192,7 +192,25 @@ except ImportError:
     char       = _Stub()
     testing    = _Stub()
 
-# ── 5. numpy2 web extras ──────────────────────────────────────────────────────
+# ── 5. numpy2 advanced features ──────────────────────────────────────────────
+from .advanced import (
+    ArrayCache,
+    ArrayPipeline,
+    ArrayValidator,
+    ArrayValidationError,
+    ProfiledArray,
+    compress_array,
+    decompress_array,
+    compress_to_b64,
+    decompress_from_b64,
+    sliding_window_view,
+    batch_apply,
+    to_structured,
+    array_chunks,
+    describe,
+)
+
+# ── 6. numpy2 web extras ──────────────────────────────────────────────────────
 from .core import (
     to_json, from_json,
     serialize, deserialize,
@@ -457,6 +475,12 @@ __all__ = [
     'infer_dtype', 'safe_cast', 'batch_convert',
     'FastAPIResponse', 'FlaskResponse', 'DjangoResponse',
     'setup_json_encoder', 'create_response_handler',
+    # advanced
+    'ArrayCache', 'ArrayPipeline', 'ArrayValidator', 'ArrayValidationError',
+    'ProfiledArray',
+    'compress_array', 'decompress_array', 'compress_to_b64', 'decompress_from_b64',
+    'sliding_window_view', 'batch_apply', 'to_structured',
+    'array_chunks', 'describe',
 ]
 
 # matrix alias (2-D array subclass stub)
