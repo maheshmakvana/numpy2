@@ -15,7 +15,7 @@ NumPy is used as an optional accelerator when installed; if it is absent
 every operation runs in pure Python.
 """
 
-__version__ = "2.1.0"
+__version__ = "2.2.0"
 __author__  = "Mahesh Makvana"
 __email__   = "mahesh.makvana@example.com"
 __license__ = "MIT"
@@ -163,6 +163,7 @@ round = around
 from . import linalg
 from . import fft
 from . import random
+from . import compat
 
 # make polynomial, ma, lib stubs (users can still use them via numpy if installed)
 try:
@@ -467,7 +468,7 @@ __all__ = [
     # err state
     'seterr', 'geterr', 'errstate', 'seterrcall', 'geterrcall',
     # submodules
-    'linalg', 'fft', 'random', 'polynomial', 'ma', 'lib', 'testing', 'char',
+    'linalg', 'fft', 'random', 'compat', 'polynomial', 'ma', 'lib', 'testing', 'char',
     # web extras
     'to_json', 'from_json', 'serialize', 'deserialize',
     'JSONEncoder', 'JSONDecoder',

@@ -54,6 +54,20 @@ That's it. One line. Problem solved.
 
 ---
 
+## Compatibility (Supported Subset)
+
+`numpy2` aims to be a practical, pure-Python **subset** of NumPy. Some APIs are intentionally stubbed or only partially supported.
+
+Use `numpy2.compat.report()` to disclose what’s currently stubbed/high-risk:
+
+```python
+import numpy2 as np2
+
+report = np2.compat.report()
+print(report["subset"]["mgrid"])
+print(report["summary"])
+```
+
 ## 📊 How numpy2 Compares to Alternatives
 
 ### vs. Standard `json.dumps()` with Custom Encoders
