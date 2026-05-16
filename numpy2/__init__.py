@@ -15,9 +15,9 @@ NumPy is used as an optional accelerator when installed; if it is absent
 every operation runs in pure Python.
 """
 
-__version__ = "2.2.0"
+__version__ = "2.4.1"
 __author__  = "Mahesh Makvana"
-__email__   = "mahesh.makvana@example.com"
+__email__   = "maheshmakwana527@gmail.com"
 __license__ = "MIT"
 
 # ── 1. dtype system ───────────────────────────────────────────────────────────
@@ -209,6 +209,20 @@ from .advanced import (
     to_structured,
     array_chunks,
     describe,
+    # ── New in 2.4.0 ──────────────────────────────────────────────────────────
+    NamedArray,
+    vmapped, vmap,
+    scan,
+    smart_axis, resolve_axis,
+    nan_safe_convert, NaNInfEncoder, nan_safe_json_dumps,
+    ThreadSafeArray,
+    CompatLayer,
+    auto_type_convert,
+    chunked_reduce,
+    broadcast_explicit, align_shapes,
+    einsum_enhanced,
+    array_memory_usage,
+    LazyArray,
 )
 
 # ── 6. numpy2 web extras ──────────────────────────────────────────────────────
@@ -482,6 +496,20 @@ __all__ = [
     'compress_array', 'decompress_array', 'compress_to_b64', 'decompress_from_b64',
     'sliding_window_view', 'batch_apply', 'to_structured',
     'array_chunks', 'describe',
+    # New in 2.4.0
+    'NamedArray',
+    'vmapped', 'vmap',
+    'scan',
+    'smart_axis', 'resolve_axis',
+    'nan_safe_convert', 'NaNInfEncoder', 'nan_safe_json_dumps',
+    'ThreadSafeArray',
+    'CompatLayer',
+    'auto_type_convert',
+    'chunked_reduce',
+    'broadcast_explicit', 'align_shapes',
+    'einsum_enhanced',
+    'array_memory_usage',
+    'LazyArray',
 ]
 
 # matrix alias (2-D array subclass stub)

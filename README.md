@@ -488,7 +488,7 @@ For questions, [start a discussion](https://github.com/maheshmakvana/numpy2/disc
 
 - **GitHub**: [@maheshmakvana](https://github.com/maheshmakvana)
 - **Twitter**: [@mahesh_makvana](https://twitter.com/mahesh_makvana)
-- **Email**: mahesh.makvana@example.com
+- **Email**: maheshmakwana527@gmail.com
 
 ---
 

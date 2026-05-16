@@ -102,7 +102,7 @@ When suggesting features:
 Feel free to:
 - Open an issue on GitHub
 - Start a discussion
-- Contact: mahesh.makvana@example.com
+- Contact: maheshmakwana527@gmail.com
 
 ## License
 
