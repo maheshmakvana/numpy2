@@ -1,3 +1,5 @@
+![numpy2 Banner](assets/images/banner.svg)
+
 # numpy2 - Advanced NumPy for Web Applications
 
 [![PyPI version](https://img.shields.io/pypi/v/numpy2.svg)](https://pypi.org/project/numpy2/)

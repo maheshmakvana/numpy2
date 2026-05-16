@@ -15,7 +15,7 @@ long_description = readme_file.read_text(encoding="utf-8") if readme_file.exists
 
 setup(
     name="numpy2",
-    version="2.1.3",
+    version="2.1.4",
     author="Mahesh Makvana",
     author_email="mahesh.makvana@example.com",
     description="Pure-Python NumPy drop-in: full NumPy API + JSON serialization, array compression, pipeline transforms, schema validation, zero dependencies",
@@ -48,7 +48,7 @@ setup(
         "Topic :: Software Development :: Libraries",
     ],
     python_requires=">=3.8",
-    install_requires=[],   # zero required dependencies ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â pure Python
+    install_requires=[],   # zero required dependencies ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â pure Python
     extras_require={
         "numpy": ["numpy>=1.20.0"],    # optional accelerator
         "pandas": ["pandas>=1.3.0"],   # optional pandas interop
