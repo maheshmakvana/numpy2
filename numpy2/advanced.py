@@ -94,7 +94,9 @@ class ArrayCache:
         for k, v in sorted(kwargs.items()):
             parts.append(f"{k}={v!r}")
         raw = "|".join(parts)
-        return hashlib.md5(raw.encode()).hexdigest()
+        # usedforsecurity=False: MD5 here is only for cache key hashing,
+        # not for security/cryptographic purposes.
+        return hashlib.md5(raw.encode(), usedforsecurity=False).hexdigest()
 
     def get(self, key: str) -> Optional[Any]:
         with self._lock:
@@ -1198,7 +1200,11 @@ class CompatLayer:
 
     @staticmethod
     def who(vardict=None):
-        """Print numpy2 arrays in the given dictionary (was np.who)."""
+        """Print numpy2 arrays in the given dictionary (was np.who).
+
+        Note: Uses sys._getframe() for frame introspection, which is
+        CPython-specific and may not work in other Python implementations.
+        """
         if vardict is None:
             vardict = sys._getframe(1).f_globals
         for name, val in vardict.items():

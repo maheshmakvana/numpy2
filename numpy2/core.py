@@ -7,9 +7,13 @@ No NumPy import required — works with numpy2's own ndarray.
 
 import json
 import math
+import sys
 from typing import Any, Dict, List, Union, Optional
 
 from .array import ndarray as _ndarray, asarray
+
+# Default maximum size for JSON inputs (50 MB) to prevent resource exhaustion.
+_DEFAULT_MAX_JSON_SIZE = 50 * 1024 * 1024
 
 
 # ── optional pandas ───────────────────────────────────────────────────────────
@@ -137,16 +141,37 @@ def to_json(obj: Any, indent: Optional[int] = None, **kwargs) -> str:
 def from_json(
     json_str: str,
     to_numpy: bool = False,
-    dtype: Optional[str] = None
+    dtype: Optional[str] = None,
+    max_size: Optional[int] = None
 ) -> Any:
     """
     Deserialize JSON string (optionally to numpy2 ndarray).
+
+    Parameters
+    ----------
+    json_str : str
+        JSON string to deserialize.
+    to_numpy : bool
+        If True, convert lists to numpy2 ndarray.
+    dtype : str or None
+        Target dtype for ndarray conversion.
+    max_size : int or None
+        Maximum allowed size of JSON input in bytes.
+        Defaults to 50 MB. Set to None to disable.
 
     Example:
         >>> import numpy2 as np2
         >>> np2.from_json('[1, 2, 3]', to_numpy=True)
         array([1, 2, 3], dtype=int64)
     """
+    limit = max_size if max_size is not None else _DEFAULT_MAX_JSON_SIZE
+    if limit is not None and sys.getsizeof(json_str) > limit:
+        raise ValueError(
+            f"JSON input size ({sys.getsizeof(json_str)} bytes) exceeds "
+            f"maximum allowed size ({limit} bytes). "
+            "Increase max_size if needed."
+        )
+
     decoder = JSONDecoder(to_numpy=to_numpy, dtype=dtype)
     result = decoder.decode(json_str)
 

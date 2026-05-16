@@ -508,6 +508,18 @@ Thanks to the NumPy and pandas communities for amazing libraries that numpy2 bui
 
 ## Changelog
 
+### v2.4.2 (2026-05-17)
+- SECURITY: Fixed pickle.load() RCE (CWE-502) -- `load()` now defaults to `allow_pickle=False`
+  with restricted unpickler that only whitelists safe types; warning when pickle enabled
+- SECURITY: Fixed path traversal (CWE-22) -- validated file paths in loadtxt/savetxt/save/savez
+  using `os.path.abspath()` and null-byte checks
+- SECURITY: Fixed MD5 non-security use (CWE-327) -- added `usedforsecurity=False` to cache key hashing
+- SECURITY: Fixed missing JSON size limits (CWE-770) -- `from_json()` enforces 50 MB default limit
+- SECURITY: Fixed bare except clauses -- all exception handlers now specify exception types
+- DEPRECATION: Legacy RandomState (Mersenne Twister) functions now emit FutureWarning;
+  migrate to `numpy2.random.Generator` via `default_rng()`
+- DOC: Noted CPython-specific `sys._getframe()` usage in CompatLayer.who()
+
 ### v2.1.0 (2026-04-10)
 - Added Changelog section to README for release traceability
 - Added ArrayCache, ArrayPipeline, ArrayValidator, compression helpers, sliding_window_view, batch_apply, describe

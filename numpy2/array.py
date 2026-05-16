@@ -1187,7 +1187,72 @@ def fromstring(string, dtype='float64', count=-1, sep=' '):
     dt = _dtype_cls(dtype)
     return ndarray([dt.cast(p.strip()) for p in parts if p.strip()], dtype=dt)
 
+# ── path safety helpers ─────────────────────────────────────────────────────────
+
+def _safe_path(fname, writable=False):
+    """Resolve and validate a file path to prevent directory traversal."""
+    import os as _os
+    resolved = _os.path.abspath(_os.path.normpath(fname))
+    # Basic check: no null bytes, no embedded drive access tricks
+    if '\x00' in fname:
+        raise ValueError("Null byte in file path")
+    if not isinstance(fname, (str, bytes)):
+        raise TypeError("File path must be a string or bytes")
+    return resolved
+
+
+# ── pickle safe-load helper ─────────────────────────────────────────────────────
+
+def _safe_load(file_obj):
+    """Load data from a pickle file with restricted deserialization.
+
+    Only permits basic Python types and numpy2 ndarray to be unpickled,
+    preventing arbitrary code execution via malicious pickle data.
+    """
+    import pickle
+    import io
+    data = file_obj.read()
+    buf = io.BytesIO(data) if isinstance(data, bytes) else data
+
+    class _RestrictedUnpickler(pickle.Unpickler):
+        def find_class(self, module, name):
+            # Whitelist of safe modules and types
+            ALLOWED_MODULES = {
+                'builtins',
+                '_collections_abc',
+                'copyreg',
+                'enum',
+                'types',
+            }
+            ALLOWED_TYPES = {
+                # Standard Python types
+                'bool', 'int', 'float', 'complex', 'str', 'bytes', 'bytearray',
+                'list', 'tuple', 'set', 'frozenset', 'dict', 'NoneType',
+                'slice', 'range', 'property', 'staticmethod', 'classmethod',
+                # Collections
+                'OrderedDict', 'defaultdict', 'Counter', 'deque',
+            }
+            # Allow numpy2 ndarray
+            if module == 'numpy2.array' and name in ('ndarray',):
+                return super().find_class(module, name)
+            # Allow standard library
+            if module in ALLOWED_MODULES:
+                return super().find_class(module, name)
+            if module == 'builtins' and name in ALLOWED_TYPES:
+                return super().find_class(module, name)
+            if module.startswith('numpy2.'):
+                # Allow numpy2 types
+                return super().find_class(module, name)
+            raise pickle.UnpicklingError(
+                f"Unsafe deserialization blocked: module='{module}', name='{name}'. "
+                "Use allow_pickle=True to enable arbitrary pickle loading."
+            )
+
+    return _RestrictedUnpickler(buf).load()
+
+
 def loadtxt(fname, dtype='float64', delimiter=None, skiprows=0, usecols=None):
+    _safe_path(fname)
     import csv
     rows = []
     with open(fname, newline='') as f:
@@ -1201,6 +1266,7 @@ def loadtxt(fname, dtype='float64', delimiter=None, skiprows=0, usecols=None):
     return ndarray(rows, dtype=dtype)
 
 def savetxt(fname, X, fmt='%.18e', delimiter=' ', newline='\n', header='', footer='', encoding=None):
+    _safe_path(fname, writable=True)
     X = asarray(X)
     with open(fname, 'w', encoding=encoding or 'utf-8') as f:
         if header:
@@ -1213,12 +1279,37 @@ def savetxt(fname, X, fmt='%.18e', delimiter=' ', newline='\n', header='', foote
         if footer:
             f.write('# ' + footer + newline)
 
-def load(file, allow_pickle=True):
-    import pickle
-    with open(file, 'rb') as f:
-        return pickle.load(f)
+def load(file, allow_pickle=False):
+    """Load array from a .npy file using pickle.
 
-def save(file, arr, allow_pickle=True):
+    Parameters
+    ----------
+    file : str or path-like
+        File path.
+    allow_pickle : bool, default False
+        If True, use standard pickle.load() (potentially unsafe).
+        If False (default), use a restricted unpickler that only allows
+        safe built-in types and numpy2.ndarray.
+
+    Warning
+    -------
+    Pickle files can execute arbitrary code. Only load files you trust.
+    """
+    import warnings as _warnings
+    resolved = _safe_path(file)
+    with open(resolved, 'rb') as f:
+        if allow_pickle:
+            _warnings.warn(
+                "load(allow_pickle=True): loading untrusted pickle data can "
+                "execute arbitrary code. Use with caution.",
+                UserWarning, stacklevel=2,
+            )
+            import pickle
+            return pickle.load(f)
+        return _safe_load(f)
+
+def save(file, arr, allow_pickle=False):
+    _safe_path(file, writable=True)
     import pickle
     if not file.endswith('.npy'):
         file += '.npy'
@@ -1226,6 +1317,7 @@ def save(file, arr, allow_pickle=True):
         pickle.dump(arr, f)
 
 def savez(file, *args, **kwargs):
+    _safe_path(file, writable=True)
     import pickle
     arrays = {f'arr_{i}': a for i, a in enumerate(args)}
     arrays.update(kwargs)

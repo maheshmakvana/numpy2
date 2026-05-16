@@ -7,6 +7,7 @@ No NumPy required.
 
 import random as _random
 import math
+import warnings as _warnings
 from .array import ndarray, _dtype_cls, _prod
 
 
@@ -14,14 +15,23 @@ from .array import ndarray, _dtype_cls, _prod
 
 _rng = _random.Random()
 
+# Legacy RNG warning message
+_LEGACY_RNG_WARNING = (
+    "Legacy RandomState (Mersenne Twister) is deprecated. "
+    "Use numpy2.random.Generator with default_rng() instead."
+)
+
 
 def seed(s=None):
+    _warnings.warn(_LEGACY_RNG_WARNING, FutureWarning, stacklevel=2)
     _rng.seed(s)
 
 def get_state():
+    _warnings.warn(_LEGACY_RNG_WARNING, FutureWarning, stacklevel=2)
     return _rng.getstate()
 
 def set_state(state):
+    _warnings.warn(_LEGACY_RNG_WARNING, FutureWarning, stacklevel=2)
     _rng.setstate(state)
 
 
@@ -44,14 +54,19 @@ def _fill(fn, shape):
 
 # ── uniform distributions ─────────────────────────────────────────────────────
 
+def _legacy_warning():
+    _warnings.warn(_LEGACY_RNG_WARNING, FutureWarning, stacklevel=3)
+
 def rand(*shape):
     """Uniform [0, 1) — rand(d0, d1, ...)"""
+    _legacy_warning()
     if not shape:
         return _rng.random()
     n = _prod(shape)
     return ndarray([_rng.random() for _ in range(n)], dtype=_dtype_cls('float64'), shape=shape)
 
 def random(size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     return _fill(_rng.random, shape)
 
@@ -60,12 +75,14 @@ ranf          = random
 sample        = random
 
 def random_integers(low, high=None, size=None):
+    _legacy_warning()
     if high is None:
         high, low = low, 1
     shape = _make_shape(size)
     return _fill(lambda: _rng.randint(low, high), shape) if shape else _rng.randint(low, high)
 
 def randint(low, high=None, size=None, dtype='int64'):
+    _legacy_warning()
     if high is None:
         high, low = low, 0
     shape = _make_shape(size)
@@ -76,10 +93,12 @@ def randint(low, high=None, size=None, dtype='int64'):
     return result
 
 def uniform(low=0.0, high=1.0, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     return _fill(lambda: _rng.uniform(low, high), shape)
 
 def choice(a, size=None, replace=True, p=None):
+    _legacy_warning()
     if isinstance(a, int):
         population = list(range(a))
     else:
@@ -100,6 +119,7 @@ def choice(a, size=None, replace=True, p=None):
     return ndarray(chosen, dtype=_dtype_cls('float64'), shape=shape)
 
 def permutation(x):
+    _legacy_warning()
     if isinstance(x, int):
         lst = list(range(x))
     else:
@@ -109,6 +129,7 @@ def permutation(x):
     return ndarray(lst, dtype=_dtype_cls('float64'))
 
 def shuffle(x):
+    _legacy_warning()
     from .array import asarray
     a = asarray(x) if not isinstance(x, ndarray) else x
     _rng.shuffle(a._data)
@@ -118,6 +139,7 @@ def shuffle(x):
 
 def randn(*shape):
     """Standard normal N(0,1) — randn(d0, d1, ...)"""
+    _legacy_warning()
     if not shape:
         return _rng.gauss(0, 1)
     n = _prod(shape)
@@ -125,15 +147,18 @@ def randn(*shape):
                    dtype=_dtype_cls('float64'), shape=shape)
 
 def standard_normal(size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     return _fill(lambda: _rng.gauss(0, 1), shape)
 
 def normal(loc=0.0, scale=1.0, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     return _fill(lambda: _rng.gauss(loc, scale), shape)
 
 def multivariate_normal(mean, cov, size=None):
     """Sample from multivariate normal using Cholesky decomposition."""
+    _legacy_warning()
     from .array import asarray
     from .linalg import cholesky
     mean = asarray(mean)
@@ -156,25 +181,31 @@ def multivariate_normal(mean, cov, size=None):
 # ── other continuous distributions ───────────────────────────────────────────
 
 def exponential(scale=1.0, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     return _fill(lambda: _rng.expovariate(1.0 / scale), shape)
 
 def gamma(shape_param, scale=1.0, size=None):
+    _legacy_warning()
     shp = _make_shape(size)
     return _fill(lambda: _rng.gammavariate(shape_param, scale), shp)
 
 def beta(a, b, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     return _fill(lambda: _rng.betavariate(a, b), shape)
 
 def chisquare(df, size=None):
+    _legacy_warning()
     return gamma(df / 2.0, 2.0, size=size)
 
 def noncentral_chisquare(df, nonc, size=None):
+    _legacy_warning()
     # Approximation: normal shift
     return chisquare(df, size=size)
 
 def f(dfnum, dfden, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     def _f_sample():
         x1 = sum(_rng.gauss(0,1)**2 for _ in range(int(dfnum))) / dfnum
@@ -183,6 +214,7 @@ def f(dfnum, dfden, size=None):
     return _fill(_f_sample, shape)
 
 def standard_t(df, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     def _t():
         z = _rng.gauss(0, 1)
@@ -193,10 +225,12 @@ def standard_t(df, size=None):
 t = standard_t  # alias sometimes used
 
 def lognormal(mean=0.0, sigma=1.0, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     return _fill(lambda: _rng.lognormvariate(mean, sigma), shape)
 
 def logistic(loc=0.0, scale=1.0, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     def _logistic():
         u = _rng.random()
@@ -204,6 +238,7 @@ def logistic(loc=0.0, scale=1.0, size=None):
     return _fill(_logistic, shape)
 
 def laplace(loc=0.0, scale=1.0, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     def _laplace():
         u = _rng.random() - 0.5
@@ -211,6 +246,7 @@ def laplace(loc=0.0, scale=1.0, size=None):
     return _fill(_laplace, shape)
 
 def gumbel(loc=0.0, scale=1.0, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     def _gumbel():
         u = _rng.random()
@@ -218,34 +254,42 @@ def gumbel(loc=0.0, scale=1.0, size=None):
     return _fill(_gumbel, shape)
 
 def wald(mean, scale, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     return _fill(lambda: _rng.gauss(mean, math.sqrt(scale)), shape)
 
 def weibull(a, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     return _fill(lambda: _rng.weibullvariate(1.0, a), shape)
 
 def power(a, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     return _fill(lambda: _rng.random() ** (1.0 / a), shape)
 
 def triangular(left=0.0, mode=0.5, right=1.0, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     return _fill(lambda: _rng.triangular(left, right, mode), shape)
 
 def vonmises(mu=0.0, kappa=1.0, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     return _fill(lambda: _rng.vonmisesvariate(mu, kappa), shape)
 
 def rayleigh(scale=1.0, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     return _fill(lambda: scale * math.sqrt(-2 * math.log(_rng.random())), shape)
 
 def pareto(a, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     return _fill(lambda: _rng.paretovariate(a) - 1, shape)
 
 def zipf(a, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     # Acceptance-rejection for Zipf distribution
     def _zipf():
@@ -265,6 +309,7 @@ def zipf(a, size=None):
 # ── discrete distributions ────────────────────────────────────────────────────
 
 def poisson(lam=1.0, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     def _poisson():
         L = math.exp(-lam)
@@ -276,10 +321,12 @@ def poisson(lam=1.0, size=None):
     return _fill(_poisson, shape)
 
 def binomial(n, p, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     return _fill(lambda: sum(1 for _ in range(n) if _rng.random() < p), shape)
 
 def negative_binomial(n, p, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     def _nb():
         successes, trials = 0, 0
@@ -291,10 +338,12 @@ def negative_binomial(n, p, size=None):
     return _fill(_nb, shape)
 
 def geometric(p, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     return _fill(lambda: math.ceil(math.log(_rng.random()) / math.log(1-p)), shape)
 
 def hypergeometric(ngood, nbad, nsample, size=None):
+    _legacy_warning()
     shape = _make_shape(size)
     def _hg():
         good, bad, drawn = ngood, nbad, nsample
@@ -309,6 +358,7 @@ def hypergeometric(ngood, nbad, nsample, size=None):
     return _fill(_hg, shape)
 
 def multinomial(n, pvals, size=None):
+    _legacy_warning()
     from .array import asarray
     pvals = list(asarray(pvals)._data)
     shape = _make_shape(size) or ()
@@ -335,6 +385,7 @@ def multinomial(n, pvals, size=None):
                    shape=shape + (len(pvals),))
 
 def dirichlet(alpha, size=None):
+    _legacy_warning()
     alpha = list(alpha)
     shape = _make_shape(size) or ()
     def _sample():
