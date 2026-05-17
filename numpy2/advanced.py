@@ -1307,7 +1307,11 @@ def chunked_reduce(arr: ndarray, reducer: Callable, chunk_size: int = 10000,
         from .array import concatenate
         return reducer(concatenate(partials, axis=axis))
     if isinstance(partials[0], (int, float)):
-        return type(partials[0])(sum(partials) / len(partials)) if 'mean' in str(reducer) else sum(partials)
+        if 'mean' in str(reducer):
+            chunk_sizes = [min(chunk_size, n - start) for start in range(0, n, chunk_size)]
+            weighted_sum = sum(p * s for p, s in zip(partials, chunk_sizes))
+            return type(partials[0])(weighted_sum / n)
+        return sum(partials)
     return partials
 
 

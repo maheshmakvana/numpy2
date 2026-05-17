@@ -1251,11 +1251,11 @@ def _safe_load(file_obj):
     return _RestrictedUnpickler(buf).load()
 
 
-def loadtxt(fname, dtype='float64', delimiter=None, skiprows=0, usecols=None):
+def loadtxt(fname, dtype='float64', delimiter=None, skiprows=0, usecols=None, encoding=None):
     _safe_path(fname)
     import csv
     rows = []
-    with open(fname, newline='') as f:
+    with open(fname, newline='', encoding=encoding) as f:
         reader = csv.reader(f, delimiter=delimiter or ' ')
         for _ in range(skiprows):
             next(reader)
@@ -1421,7 +1421,7 @@ def unique(ar, return_index=False, return_inverse=False, return_counts=False, ax
         if v not in seen:
             seen[v] = i
             order.append(v)
-    unique_vals = sorted(order, key=lambda v: seen[v])
+    unique_vals = sorted(order)
     u = ndarray(unique_vals, dtype=ar.dtype)
     results = [u]
     if return_index:

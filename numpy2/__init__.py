@@ -15,7 +15,7 @@ NumPy is used as an optional accelerator when installed; if it is absent
 every operation runs in pure Python.
 """
 
-__version__ = "2.4.3"
+__version__ = "2.4.4"
 __author__  = "Mahesh Makvana"
 __email__   = "maheshmakwana527@gmail.com"
 __license__ = "MIT"

@@ -15,7 +15,7 @@ long_description = readme_file.read_text(encoding="utf-8") if readme_file.exists
 
 setup(
     name="numpy2",
-    version="2.4.3",
+    version="2.4.4",
     author="Mahesh Makvana",
     author_email="maheshmakwana527@gmail.com",
     description="numpy2: Pure-Python NumPy drop-in replacement with zero dependencies. Fixes numpy JSON serialization errors, broadcasting confusion with named dimensions, NaN/Inf handling, thread safety, JAX-style vmapped vectorization, array caching, compression, pipelines, validation, scan operations, lazy arrays, and seamless web framework integration for FastAPI, Flask, and Django. Drop-in import: numpy2 as np",
